@@ -1,0 +1,76 @@
+create table localizacao(
+	id int primary key,
+	descricao varchar(10)
+);
+create table empresa(
+	id int primary key,
+	descricao varchar(25),
+	cnpj varchar(25),
+	telefone varchar(25)
+);
+create table produto(
+	codigo varchar (40),
+	descricao varchar(255),
+	quantidade int,
+	valor float,
+	idLocal int,
+	id int primary key,
+	revisao varchar(5),
+	ultima_modificacao date,
+	observacao varchar(255),
+	codAlternativo varchar(25),
+	FOREIGN KEY(idLocal) REFERENCES localizacao(id)
+);
+create table producao(
+	id int primary key,
+	dataProducao date
+);
+create table itensProducao(
+	idProducao int,
+	idProduto int,
+	qtd int,
+	FOREIGN KEY (idProducao) REFERENCES producao (id),
+	FOREIGN KEY (idProduto) REFERENCES produto (id)
+);
+create table orcamento(
+	id int primary key,
+	dataEmissao date,
+	idEmpresa int,
+	cliente varchar(25),
+	condPagamento varchar(25),
+	obs varchar(90),
+	valor float,
+	FOREIGN KEY(idEmpresa) REFERENCES empresa (id)
+);
+create table itensOrcamento(
+	idOrcamento int,
+	idProduto int,
+	qtd int,
+	codAlternativo varchar(25),
+	descricao varchar(90),
+	valor float,
+	FOREIGN KEY (idOrcamento) REFERENCES orcamento (id),
+	FOREIGN KEY (idProduto) REFERENCES produto (id)
+);
+create table pedido(
+	id int primary key,
+	dataEmissao date,
+	idEmpresa int,
+	stat varchar(5),
+	idOrcamento int,
+	dataEntrega date,
+	prodPronto varchar(7),
+	porcent varchar(4),
+	FOREIGN KEY(idEmpresa) REFERENCES empresa (id),
+	FOREIGN KEY(idOrcamento) REFERENCES orcamento(id)
+);
+create table itensPedido(
+	idPedido int,
+	idProduto int,
+	qtd int,
+	codAlternativo varchar(25),
+	descricao varchar(90),
+	stat varchar(5),
+	FOREIGN KEY (idPedido) REFERENCES pedido (id),
+	FOREIGN KEY (idProduto) REFERENCES produto (id)
+);
